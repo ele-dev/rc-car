@@ -33,6 +33,10 @@ int main(int argc, char **argv)
 
     // connect to pigpio systemd daemon and retrieve handle
     gpio_handle = pigpio_start(NULL, NULL);
+    if(gpio_handle < 0) {
+        std::cerr << "Failed to connect to PiGPIO systemd daemon!" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
     // init submodules
     bool result = steeringwheel.init(gpio_handle);
