@@ -9,6 +9,8 @@
 #include <pigpiod_if2.h>
 #include <iostream>
 #include <signal.h>
+#include <chrono>
+#include <thread>
 
 // function prototypes
 void terminate_signal_handler(int);
@@ -49,10 +51,21 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    // infinite loop
+    // main application loop
+    int throttle_cmd = 0;
     while(true)
     {
-        // ...
+        motor.updateMotor_throttle(throttle_cmd);
+        std::cout << "--> Sent motor throttle command: " << throttle_cmd << std::endl;
+
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        
+        // increase and invert throttle command until upper boundaries are hit, then start over at zero
+        throttle_cmd += 30;
+        throttle_cmd *= -1;
+        if(abs(throttle_cmd) > 255) {
+            throttle_cmd = 0;
+        }
     }
 
     terminate_signal_handler(EXIT_SUCCESS);
