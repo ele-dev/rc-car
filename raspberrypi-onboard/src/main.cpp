@@ -61,7 +61,11 @@ int main(int argc, char **argv)
         std::this_thread::sleep_for(std::chrono::seconds(5));
         
         // increase and invert throttle command until upper boundaries are hit, then start over at zero
-        throttle_cmd += 30;
+        if(throttle_cmd < 0) {
+            throttle_cmd -= 30
+        } else {
+            throttle_cmd += 30;
+        }
         throttle_cmd *= -1;
         if(abs(throttle_cmd) > 255) {
             throttle_cmd = 0;
