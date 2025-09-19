@@ -58,13 +58,13 @@ int main(int argc, char **argv)
         motor.updateMotor_throttle(throttle_cmd);
         std::cout << "--> Sent motor throttle command: " << throttle_cmd << std::endl;
 
-        std::this_thread::sleep_for(std::chrono::seconds(5));
+        std::this_thread::sleep_for(std::chrono::seconds(10));
         
         // increase and invert throttle command until upper boundaries are hit, then start over at zero
         if(throttle_cmd < 0) {
-            throttle_cmd -= 30;
+            throttle_cmd -= 25;
         } else {
-            throttle_cmd += 30;
+            throttle_cmd += 25;
         }
         throttle_cmd *= -1;
         if(abs(throttle_cmd) > 255) {
