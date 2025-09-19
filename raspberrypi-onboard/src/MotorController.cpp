@@ -33,9 +33,12 @@ bool MotorController::init(const int handle)
     }
 
     // setup fixed frequency PWM signal channel for throttle control
-    if(set_PWM_frequency(this->gpio_handle, GPIO_PWM_THROTTLE, PWM_FREQ_HZ) != 0) {
+    int frequency = set_PWM_frequency(this->gpio_handle, GPIO_PWM_THROTTLE, PWM_FREQ_HZ);
+    if(frequency == PI_BAD_USER_GPIO || frequency == PI_NOT_PERMITTED) {
         std::cerr << "Failed to configure PWM for gpio pin EN!" << std::endl;
         return false;
+    } else {
+        std::cout << "Set PWM frequency for motor drive to " << frequency << " Hz" << std::endl;
     }
 
     // set initial throttle to stand still
