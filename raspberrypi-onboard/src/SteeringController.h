@@ -11,10 +11,13 @@ public:
     SteeringController();
     ~SteeringController();
 
-    bool init();
-    void shutdown();
-    void updateSteeringAngle(int angle);
+    bool init(const int handle);
+    void shutdown() const;
+    void updateSteeringAngle(const int angle) const;
 
 private:
-    void centerSteeringServo();
+    void centerSteeringServo() const;
+
+private:
+    int gpio_handle;
 };

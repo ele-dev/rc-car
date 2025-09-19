@@ -15,6 +15,7 @@ void terminateSignalHandler(int);
 // submodule instances
 MotorController motor;
 SteeringController steeringwheel;
+int gpio_handle = NULL;
 
 // ------------ application main section ------------------- //
 
@@ -29,14 +30,16 @@ int main(int argc, char **argv)
     sigIntHandler.sa_flags = 0;
     sigaction(SIGINT, &sigIntHandler, NULL);
 
+    // connect to pigpio systemd daemon and retrieve handle
+    gpio_handle = pigpio_start(NULL, NULL);
+
     // init submodules
-    bool result;
-    result = steeringwheel.init();
+    bool result = steeringwheel.init(gpio_handle);
     if(!result) {
         exit(EXIT_FAILURE);
     }
 
-    result = motor.init();
+    result = motor.init(gpio_handle);
     if(!result) {
         exit(EXIT_FAILURE);
     }
@@ -55,6 +58,9 @@ void terminateSignalHandler(int code) {
     // do manual cleanup tasks
     motor.shutdown();
     steeringwheel.shutdown();
+
+    // close the connection to the daemon
+    pigpio_stop(gpio_handle);
 
     std::cout << "\nExit now." << std::endl;
 

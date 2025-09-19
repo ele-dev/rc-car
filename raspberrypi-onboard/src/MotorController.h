@@ -12,12 +12,15 @@ public:
     MotorController();
     ~MotorController();
 
-    bool init();
-    void shutdown();
-    void updateMotorThrottle(int throttle);
+    bool init(const int handle);
+    void shutdown() const;
+    void updateMotorThrottle(int throttle) const;
 
 private:
-    void setDriveDirectionForward();
-    void setDriveDirectionBackward();
-    void stopMotor();
+    void setDriveDirectionForward() const;
+    void setDriveDirectionBackward() const;
+    void stopMotor() const;
+
+private:
+    int gpio_handle;
 };
