@@ -14,12 +14,12 @@ public:
 
     bool init(const int handle);
     void shutdown() const;
-    void updateMotorThrottle(int throttle) const;
+    void updateMotor_throttle(int throttle) const;
 
 private:
-    void setDriveDirectionForward() const;
-    void setDriveDirectionBackward() const;
-    void stopMotor() const;
+    void set_drive_direction_forward() const;
+    void set_drive_direction_backward() const;
+    void stop_motor() const;
 
 private:
     int gpio_handle;

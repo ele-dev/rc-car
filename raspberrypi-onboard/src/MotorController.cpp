@@ -23,16 +23,21 @@ bool MotorController::init(const int handle)
 
     // configure IN1 & IN2 as digital output channels
     if(set_mode(this->gpio_handle, GPIO_IN1, PI_OUTPUT) != 0) {
-        std::cerr << "Failed to configure gpio pin IN1!" << std::endl;
+        std::cerr << "Failed to configure gpio pin IN1 as output!" << std::endl;
         return false;
     }
 
     if(set_mode(this->gpio_handle, GPIO_IN2, PI_OUTPUT) != 0) {
-        std::cerr << "Failed to configure gpio pin IN2!" << std::endl;
+        std::cerr << "Failed to configure gpio pin IN2 as output!" << std::endl;
         return false;
     }
 
     // setup fixed frequency PWM signal channel for throttle control
+    if(set_mode(this->gpio_handle, GPIO_PWM_THROTTLE, PI_OUTPUT) != 0) {
+        std::cerr << "Failed tp configure EN pin as output!" << std::endl;
+        return false;
+    }
+
     int frequency = set_PWM_frequency(this->gpio_handle, GPIO_PWM_THROTTLE, PWM_FREQ_HZ);
     if(frequency == PI_BAD_USER_GPIO || frequency == PI_NOT_PERMITTED) {
         std::cerr << "Failed to configure PWM for gpio pin EN!" << std::endl;
@@ -42,7 +47,7 @@ bool MotorController::init(const int handle)
     }
 
     // set initial throttle to stand still
-    this->stopMotor();
+    this->stop_motor();
 
     std::cout << "Motor controller initialized and ready" << std::endl;
 
@@ -52,10 +57,10 @@ bool MotorController::init(const int handle)
 void MotorController::shutdown() const
 {
     // reset throttle to stand still
-    this->stopMotor();
+    this->stop_motor();
 }
 
-void MotorController::updateMotorThrottle(int throttle) const
+void MotorController::updateMotor_throttle(int throttle) const
 {
     // clamp the throtlle to the allowed range
     if(throttle > 255) {
@@ -66,34 +71,34 @@ void MotorController::updateMotorThrottle(int throttle) const
 
     // small throttle values below certain threshold shall not drive the motor (protect against noisy inputs)
     if(abs(throttle) < 30) {
-        this->stopMotor();
+        this->stop_motor();
         return;
     }
 
     // change motor drive direction based on the sign (forward + | backward -)
     if(throttle > 0) {
-        this->setDriveDirectionForward();
+        this->set_drive_direction_forward();
     } else {
-        this->setDriveDirectionBackward();
+        this->set_drive_direction_backward();
     }
 
     // output new duty cycle to ajdust motor throttle
     set_PWM_dutycycle(this->gpio_handle, GPIO_PWM_THROTTLE, abs(throttle));
 }
 
-void MotorController::setDriveDirectionForward() const
+void MotorController::set_drive_direction_forward() const
 {
     gpio_write(this->gpio_handle, GPIO_IN1, 0);
     gpio_write(this->gpio_handle, GPIO_IN2, 1);
 }
 
-void MotorController::setDriveDirectionBackward() const 
+void MotorController::set_drive_direction_backward() const 
 {
     gpio_write(this->gpio_handle, GPIO_IN1, 1);
     gpio_write(this->gpio_handle, GPIO_IN2, 0);
 }
 
-void MotorController::stopMotor() const 
+void MotorController::stop_motor() const 
 {
     gpio_write(this->gpio_handle, GPIO_IN1, 0);
     gpio_write(this->gpio_handle, GPIO_IN2, 0);

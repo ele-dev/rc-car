@@ -13,10 +13,10 @@ public:
 
     bool init(const int handle);
     void shutdown() const;
-    void updateSteeringAngle(const int angle) const;
+    void update_steering_angle(const int angle) const;
 
 private:
-    void centerSteeringServo() const;
+    void center_steering_servo() const;
 
 private:
     int gpio_handle;

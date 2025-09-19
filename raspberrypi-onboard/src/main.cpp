@@ -11,7 +11,7 @@
 #include <signal.h>
 
 // function prototypes
-void terminateSignalHandler(int);
+void terminate_signal_handler(int);
 
 // submodule instances
 MotorController motor;
@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 
     // create signal handler for clean Ctrl+C close up
     struct sigaction sigIntHandler;
-    sigIntHandler.sa_handler = terminateSignalHandler;
+    sigIntHandler.sa_handler = terminate_signal_handler;
     sigemptyset(&sigIntHandler.sa_mask);
     sigIntHandler.sa_flags = 0;
     sigaction(SIGINT, &sigIntHandler, NULL);
@@ -55,11 +55,11 @@ int main(int argc, char **argv)
         // ...
     }
 
-    terminateSignalHandler(EXIT_SUCCESS);
+    terminate_signal_handler(EXIT_SUCCESS);
     return EXIT_SUCCESS;
 }
 
-void terminateSignalHandler(int code) {
+void terminate_signal_handler(int code) {
     // do manual cleanup tasks
     motor.shutdown();
     steeringwheel.shutdown();

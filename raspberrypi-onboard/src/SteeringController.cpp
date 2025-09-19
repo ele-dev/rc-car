@@ -27,7 +27,7 @@ bool SteeringController::init(const int handle)
     }
 
     // initialized steering servo in center position
-    this->centerSteeringServo();
+    this->center_steering_servo();
 
     std::cout << "Steering controller initialized and ready" << std::endl;
 
@@ -37,10 +37,10 @@ bool SteeringController::init(const int handle)
 void SteeringController::shutdown() const
 {
     // center steering servo before shutdown
-    this->centerSteeringServo();
+    this->center_steering_servo();
 }
 
-void SteeringController::updateSteeringAngle(const int angle) const
+void SteeringController::update_steering_angle(const int angle) const
 {
     // map zero-centered angle values to the servo pulse duration range
     // optimized way for default limits
@@ -59,7 +59,7 @@ void SteeringController::updateSteeringAngle(const int angle) const
     set_servo_pulsewidth(this->gpio_handle, GPIO_SERVO, pulse_duration);
 }
 
-void SteeringController::centerSteeringServo() const
+void SteeringController::center_steering_servo() const
 {
     set_servo_pulsewidth(this->gpio_handle, GPIO_SERVO, CENTER_PULSE_DURATION);
 }
