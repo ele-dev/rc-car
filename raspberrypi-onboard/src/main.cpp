@@ -62,7 +62,7 @@ int main(int argc, char **argv)
         
         // increase and invert throttle command until upper boundaries are hit, then start over at zero
         if(throttle_cmd < 0) {
-            throttle_cmd -= 30
+            throttle_cmd -= 30;
         } else {
             throttle_cmd += 30;
         }
