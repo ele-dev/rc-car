@@ -29,6 +29,18 @@ int main(int argc, char **argv)
     sigIntHandler.sa_flags = 0;
     sigaction(SIGINT, &sigIntHandler, NULL);
 
+    // init submodules
+    bool result;
+    result = steeringwheel.init();
+    if(!result) {
+        exit(EXIT_FAILURE);
+    }
+
+    result = motor.init();
+    if(!result) {
+        exit(EXIT_FAILURE);
+    }
+
     // infinite loop
     while(true)
     {
@@ -36,15 +48,15 @@ int main(int argc, char **argv)
     }
 
     terminateSignalHandler(EXIT_SUCCESS);
-
     return EXIT_SUCCESS;
 }
 
 void terminateSignalHandler(int code) {
-    // do cleanup tasks
-    // ...
+    // do manual cleanup tasks
+    motor.shutdown();
+    steeringwheel.shutdown();
 
-    std::cout << "Exit now." << std::endl;
+    std::cout << "\nExit now." << std::endl;
 
     exit(code);
 }

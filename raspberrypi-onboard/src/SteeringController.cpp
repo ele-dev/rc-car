@@ -12,7 +12,6 @@ SteeringController::SteeringController()
 
 SteeringController::~SteeringController()
 {
-    shutdown();
 }
 
 bool SteeringController::init()
@@ -25,6 +24,8 @@ bool SteeringController::init()
 
     // initialized steering servo in center position
     centerSteeringServo();
+
+    std::cout << "steering controller initialized and ready" << std::endl;
 
     return true;
 }

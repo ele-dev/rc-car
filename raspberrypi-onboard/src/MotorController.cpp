@@ -12,7 +12,6 @@ MotorController::MotorController()
 
 MotorController::~MotorController()
 {
-    shutdown();
 }
 
 bool MotorController::init() 
@@ -42,6 +41,8 @@ bool MotorController::init()
 
     // set initial throttle to stand still
     stopMotor();
+
+    std::cout << "motor controller initialized and ready" << std::endl;
 
     return true;
 }
