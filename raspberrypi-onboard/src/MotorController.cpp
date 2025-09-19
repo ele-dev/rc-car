@@ -16,11 +16,14 @@ MotorController::~MotorController()
 
 bool MotorController::init() 
 {
+
+    /*
     // initialise GPIO API 
     if(gpioInitialise() < 0) {
         std::cerr << "PiGPIO API init failed!" << std::endl;
         return false;
     }
+    */
 
     // configure IN1 & IN2 as digital output channels
     if(gpioSetMode(GPIO_IN1, PI_OUTPUT) != 0) {
