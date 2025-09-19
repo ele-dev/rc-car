@@ -6,6 +6,7 @@
 #include "MotorController.h"
 #include "SteeringController.h"
 
+#include <pigpiod_if2.h>
 #include <iostream>
 #include <signal.h>
 

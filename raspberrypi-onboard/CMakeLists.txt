@@ -23,7 +23,7 @@ include_directories(
 
 # Add all external libraries
 # find_library(WIRINGPI_LIB wiringPi REQUIRED)     
-find_library(PIGPIO_LIB pigpio REQUIRED)          
+find_library(PIGPIO_LIB pigpiod_if2 REQUIRED)          
 find_library(PTHREAD_LIB pthread REQUIRED)
 
 # Create the executable

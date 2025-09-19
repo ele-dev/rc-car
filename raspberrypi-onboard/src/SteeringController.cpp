@@ -1,6 +1,6 @@
 #include "SteeringController.h"
 
-#include <pigpio.h>
+#include <pigpiod_if2.h>
 #include <iostream>
 
 // definitions //
