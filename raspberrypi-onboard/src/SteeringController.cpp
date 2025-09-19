@@ -7,13 +7,13 @@
 
 SteeringController::SteeringController()
 {
-    this->gpio_handle = NULL;
+    this->gpio_handle = -1;
     std::cout << "Created servo steering controller handle" << std::endl;
 }
 
 SteeringController::~SteeringController()
 {
-    this->gpio_handle = NULL;
+    this->gpio_handle = -1;
 }
 
 bool SteeringController::init(const int handle)

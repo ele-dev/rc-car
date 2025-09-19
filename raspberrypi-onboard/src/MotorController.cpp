@@ -7,13 +7,13 @@
 
 MotorController::MotorController()
 {
-    this->gpio_handle = NULL;
+    this->gpio_handle = -1;
     std::cout << "Created motor controller handle" << std::endl;
 }
 
 MotorController::~MotorController()
 {
-    this->gpio_handle = NULL;
+    this->gpio_handle = -1;
 }
 
 bool MotorController::init(const int handle) 

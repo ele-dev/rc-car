@@ -2,9 +2,9 @@
 
 // constants 
 #define PWM_FREQ_HZ             200
-#define GPIO_PWM_THROTTLE       12     // use pin with HW PWM capabilities
-#define GPIO_IN1                14
-#define GPIO_IN2                15
+#define GPIO_PWM_THROTTLE       18     // PWM0 channel with HW timer
+#define GPIO_IN1                23
+#define GPIO_IN2                24
 
 class MotorController
 {
