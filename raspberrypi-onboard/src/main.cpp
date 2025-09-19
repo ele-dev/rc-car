@@ -16,7 +16,7 @@ void terminateSignalHandler(int);
 // submodule instances
 MotorController motor;
 SteeringController steeringwheel;
-int gpio_handle = NULL;
+int gpio_handle = -1;
 
 // ------------ application main section ------------------- //
 
