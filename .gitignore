@@ -4,6 +4,8 @@
 # CMake build directory
 /build*/
 build/
+/bin*/
+bin/
 
 # CMake-specific files
 CMakeCache.txt
