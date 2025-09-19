@@ -41,6 +41,8 @@ bool MotorController::init()
 
     // set initial throttle to stand still
     stopMotor();
+
+    return true;
 }
 
 void MotorController::shutdown() 

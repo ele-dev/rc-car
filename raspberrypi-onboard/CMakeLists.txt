@@ -23,7 +23,7 @@ include_directories(
 
 # Add all external libraries
 # find_library(WIRINGPI_LIB wiringPi REQUIRED)     
-# find_library(PIGPIO_LIB pigpio REQUIRED)          
+find_library(PIGPIO_LIB pigpio REQUIRED)          
 find_library(PTHREAD_LIB pthread REQUIRED)
 
 # Create the executable
@@ -32,6 +32,6 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 # Link the necessary libraries
 target_link_libraries(${PROJECT_NAME}
     # ${WIRINGPI_LIB}
-    # ${PIGPIO_LIB}
+    ${PIGPIO_LIB}
     ${PTHREAD_LIB}
 )
