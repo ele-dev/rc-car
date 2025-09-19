@@ -7,6 +7,7 @@
 
 SteeringController::SteeringController()
 {
+    std::cout << "created servo steering controller handle" << std::endl;
 }
 
 SteeringController::~SteeringController()

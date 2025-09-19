@@ -7,6 +7,7 @@
 
 MotorController::MotorController()
 {
+    std::cout << "created motor controller handle" << std::endl;
 }
 
 MotorController::~MotorController()
