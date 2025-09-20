@@ -8,7 +8,7 @@
 MotorController::MotorController()
 {
     this->gpio_handle = -1;
-    std::cout << "Created motor controller handle" << std::endl;
+    std::cout << "[MotorController] " << "Created motor controller handle" << std::endl;
 }
 
 MotorController::~MotorController()
@@ -23,33 +23,33 @@ bool MotorController::init(const int handle)
 
     // configure IN1 & IN2 as digital output channels
     if(set_mode(this->gpio_handle, GPIO_IN1, PI_OUTPUT) != 0) {
-        std::cerr << "Failed to configure gpio pin IN1 as output!" << std::endl;
+        std::cerr << "[MotorController] " << "Failed to configure gpio pin IN1 as output!" << std::endl;
         return false;
     }
 
     if(set_mode(this->gpio_handle, GPIO_IN2, PI_OUTPUT) != 0) {
-        std::cerr << "Failed to configure gpio pin IN2 as output!" << std::endl;
+        std::cerr << "[MotorController] " << "Failed to configure gpio pin IN2 as output!" << std::endl;
         return false;
     }
 
     // setup fixed frequency PWM signal channel for throttle control
     if(set_mode(this->gpio_handle, GPIO_PWM_THROTTLE, PI_OUTPUT) != 0) {
-        std::cerr << "Failed tp configure EN pin as output!" << std::endl;
+        std::cerr << "[MotorController] " << "Failed tp configure EN pin as output!" << std::endl;
         return false;
     }
 
     int frequency = set_PWM_frequency(this->gpio_handle, GPIO_PWM_THROTTLE, PWM_FREQ_HZ);
     if(frequency == PI_BAD_USER_GPIO || frequency == PI_NOT_PERMITTED) {
-        std::cerr << "Failed to configure PWM for gpio pin EN!" << std::endl;
+        std::cerr << "[MotorController] " << "Failed to configure PWM for gpio pin EN!" << std::endl;
         return false;
     } else {
-        std::cout << "Set PWM frequency for motor drive to " << frequency << " Hz" << std::endl;
+        std::cout << "[MotorController] " << "Set PWM frequency for throttle signal to " << frequency << " Hz" << std::endl;
     }
 
     // set initial throttle to stand still
     this->stop_motor();
 
-    std::cout << "Motor controller initialized and ready" << std::endl;
+    std::cout << "[MotorController] " << "Motor controller initialized and ready" << std::endl;
 
     return true;
 }

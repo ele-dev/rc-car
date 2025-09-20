@@ -16,7 +16,7 @@ bool Gamepad::init()
 {
     // init SDL API
     if(SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC | SDL_INIT_EVENTS) != 0) {
-        std::cerr << "Failed to init SDL API: " << SDL_GetError() << std::endl;
+        std::cerr << "[Gamepad] " << "Failed to init SDL API: " << SDL_GetError() << std::endl;
         return false;
     }
 
@@ -31,11 +31,11 @@ bool Gamepad::init()
     }
 
     if(!this->m_gc) {
-        std::cerr << "No game controller found!" << std::endl;
+        std::cerr << "[Gamepad] " << "No game controller found!" << std::endl;
         SDL_Quit();  
         return false;
     }
-    std::cout << "Opend: " << SDL_GameControllerName(this->m_gc) << std::endl;
+    std::cout << "[Gamepad] " << "Opened: " << SDL_GameControllerName(this->m_gc) << std::endl;
 
     return true;
 }

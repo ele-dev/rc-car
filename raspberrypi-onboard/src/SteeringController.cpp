@@ -8,7 +8,7 @@
 SteeringController::SteeringController()
 {
     this->gpio_handle = -1;
-    std::cout << "Created servo steering controller handle" << std::endl;
+    std::cout << "[SteeringController] " << "Created servo steering controller handle" << std::endl;
 }
 
 SteeringController::~SteeringController()
@@ -22,14 +22,14 @@ bool SteeringController::init(const int handle)
     this->gpio_handle = handle;
 
     if(set_mode(this->gpio_handle, GPIO_SERVO, PI_OUTPUT) != 0) {
-        std::cerr << "Failed to configure gpio pin for servo!" << std::endl;
+        std::cerr << "[SteeringController] " << "Failed to configure gpio pin for servo!" << std::endl;
         return false;
     }
 
     // initialized steering servo in center position
     this->center_steering_servo();
 
-    std::cout << "Steering controller initialized and ready" << std::endl;
+    std::cout << "[SteeringController] " << "Steering controller initialized and ready" << std::endl;
 
     return true;
 }

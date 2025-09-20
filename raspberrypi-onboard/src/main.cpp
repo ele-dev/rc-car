@@ -15,6 +15,7 @@
 
 // function prototypes
 void terminate_signal_handler(int);
+void test_motor_control();
 
 // submodule instances
 MotorController motor;
@@ -58,6 +59,76 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
+    // just for testing
+    // test_motor_control();
+
+    // main application loop
+    std::cout << "\nBegin main processing loop ..." << std::endl;
+    bool running = true;
+    while(running)
+    {
+        SDL_Event e;
+        while(SDL_PollEvent(&e)) 
+        {
+            switch(e.type)
+            {
+                case SDL_CONTROLLERAXISMOTION:
+                {
+                    if(e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY) {
+                        int input_value = e.caxis.value;
+
+                        // clamp raw values to expected range
+                        if(input_value > 32768) {
+                            input_value = 32768
+                        } else if(input_value < -32768) {
+                            input_value = -32768;
+                        }
+
+                        // intentional joystick center deadzone (to protect against noise and stick drift)
+                        if(abs(input_value) < 5000) {
+                            input_value = 0;
+                        }
+                        
+                        // calculate updated throttle value
+                        int throttle_cmd = (input_value * 255) / 32767;
+
+                        motor.updateMotor_throttle(throttle_cmd);
+                        std::cout << "--> Sent throttle command of " << throttle_cmd << std::endl;
+                    }
+                    break;
+                }
+                default:
+                {
+                    std::cerr << "Unknown SDL event (will be ignored)" << std::endl;
+                    break;
+                }
+            }
+        }
+
+        // short blocking idle time to reduce cpu load
+        SDL_delay(5);
+    }
+
+    terminate_signal_handler(EXIT_SUCCESS);
+    return EXIT_SUCCESS;
+}
+
+void terminate_signal_handler(int code) {
+    // do manual cleanup tasks
+    motor.shutdown();
+    steeringwheel.shutdown();
+    gamepad.shutdown();
+
+    // close the connection to the daemon
+    pigpio_stop(gpio_handle);
+
+    std::cout << "\nExit now." << std::endl;
+
+    exit(code);
+}
+
+void test_motor_control()
+{
     // main application loop
     int throttle_cmd = 0;
     while(true)
@@ -78,21 +149,4 @@ int main(int argc, char **argv)
             throttle_cmd = 0;
         }
     }
-
-    terminate_signal_handler(EXIT_SUCCESS);
-    return EXIT_SUCCESS;
-}
-
-void terminate_signal_handler(int code) {
-    // do manual cleanup tasks
-    motor.shutdown();
-    steeringwheel.shutdown();
-    gamepad.shutdown();
-
-    // close the connection to the daemon
-    pigpio_stop(gpio_handle);
-
-    std::cout << "\nExit now." << std::endl;
-
-    exit(code);
 }
