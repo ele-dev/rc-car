@@ -15,7 +15,7 @@ Gamepad::~Gamepad()
 bool Gamepad::init()
 {
     // init SDL API
-    if(SDL_Init() != 0) {
+    if(SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC | SDL_INIT_EVENTS) != 0) {
         std::cerr << "Failed to init SDL API: " << SDL_GetError() << std::endl;
         return false;
     }
