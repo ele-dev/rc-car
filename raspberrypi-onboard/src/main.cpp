@@ -106,7 +106,7 @@ int main(int argc, char **argv)
         }
 
         // short blocking idle time to reduce cpu load
-        SDL_delay(5);
+        SDL_Delay(5);
     }
 
     terminate_signal_handler(EXIT_SUCCESS);
