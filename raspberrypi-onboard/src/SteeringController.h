@@ -1,3 +1,8 @@
+/*
+    file: SteeringController.h
+    written by Elias Geiger
+*/
+
 #pragma once
 
 #define GPIO_SERVO                  17      // SW PWM for servo

@@ -1,3 +1,8 @@
+/*
+    file: Gamepad.cpp
+    written by Elias Geiger
+*/
+
 #include "Gamepad.h"
 
 // definitions //

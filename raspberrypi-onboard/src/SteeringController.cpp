@@ -1,3 +1,8 @@
+/*
+    file: SteeringController.cpp
+    written by Elias Geiger
+*/
+
 #include "SteeringController.h"
 
 #include <pigpiod_if2.h>

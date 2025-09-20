@@ -1,3 +1,8 @@
+/*
+    file: MotorController.cpp
+    written by Elias Geiger
+*/
+
 #include "MotorController.h"
 
 #include <pigpiod_if2.h>
