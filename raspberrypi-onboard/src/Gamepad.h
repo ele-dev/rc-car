@@ -2,6 +2,7 @@
 
 // includes
 #include <SDL.h>
+#include <iostream>
 
 class Gamepad 
 {
