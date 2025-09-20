@@ -109,7 +109,7 @@ int main(int argc, char **argv)
                 {
                     break;
                 }
-                case SDL_CONTROLERDEVICEREMOVED:
+                case SDL_CONTROLLERDEVICEREMOVED:
                 {
                     if(e.cdevice.which == gamepad.get_instance_id()) {
                         std::cout << "[Warning] Gamepad connection lost! --> Emergency stop" << std::endl;
