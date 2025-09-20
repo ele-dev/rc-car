@@ -8,7 +8,6 @@
 MotorController::MotorController()
 {
     this->gpio_handle = -1;
-    std::cout << "[MotorController] " << "Created motor controller handle" << std::endl;
 }
 
 MotorController::~MotorController()

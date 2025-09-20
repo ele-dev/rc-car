@@ -109,6 +109,14 @@ int main(int argc, char **argv)
                 {
                     break;
                 }
+                case SDL_CONTROLERDEVICEREMOVED:
+                {
+                    if(e.cdevice.which == gamepad.get_instance_id()) {
+                        std::cout << "[Warning] Gamepad connection lost! --> Emergency stop" << std::endl;
+                        motor.updateMotor_throttle(0);
+                    }
+                    break;
+                }
                 default:
                 {
                     // std::cerr << "Unknown SDL event (will be ignored)" << std::endl;

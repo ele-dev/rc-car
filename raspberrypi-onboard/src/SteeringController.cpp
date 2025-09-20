@@ -8,7 +8,6 @@
 SteeringController::SteeringController()
 {
     this->gpio_handle = -1;
-    std::cout << "[SteeringController] " << "Created servo steering controller handle" << std::endl;
 }
 
 SteeringController::~SteeringController()

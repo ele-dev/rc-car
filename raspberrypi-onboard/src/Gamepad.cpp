@@ -5,11 +5,13 @@
 Gamepad::Gamepad()
 {
     this->m_gc = nullptr;
+    this->m_jid = -1;
 }
 
 Gamepad::~Gamepad()
 {
     this->m_gc = nullptr;
+    this->m_jid = -1;
 }
 
 bool Gamepad::init()
@@ -35,7 +37,11 @@ bool Gamepad::init()
         SDL_Quit();  
         return false;
     }
-    std::cout << "[Gamepad] " << "Opened: " << SDL_GameControllerName(this->m_gc) << std::endl;
+
+    SDL_Joystick* joystick = SDL_GameControllerGetJoystick(this->m_gc);
+    this->m_jid = SDL_JoystickInstanceID(joystick);
+
+    std::cout << "[Gamepad] " << "Opened: " << SDL_GameControllerName(this->m_gc) << " | ID: " << this->m_jid << std::endl;
 
     return true;
 }
@@ -47,4 +53,9 @@ void Gamepad::shutdown()
         this->m_gc = nullptr;
     }
     SDL_Quit();
+}
+
+SDL_JoystickID Gamepad::get_instance_id() const
+{
+    return this->m_jid;
 }
