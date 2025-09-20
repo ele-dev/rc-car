@@ -5,6 +5,7 @@
 
 #include "MotorController.h"
 #include "SteeringController.h"
+#include "Gamepad.h"
 
 #include <pigpiod_if2.h>
 #include <iostream>
@@ -18,6 +19,7 @@ void terminate_signal_handler(int);
 // submodule instances
 MotorController motor;
 SteeringController steeringwheel;
+Gamepad gamepad;
 int gpio_handle = -1;
 
 // ------------ application main section ------------------- //
@@ -51,6 +53,11 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
+    result = gamepad.init();
+    if(!result) {
+        exit(EXIT_FAILURE);
+    }
+
     // main application loop
     int throttle_cmd = 0;
     while(true)
@@ -80,6 +87,7 @@ void terminate_signal_handler(int code) {
     // do manual cleanup tasks
     motor.shutdown();
     steeringwheel.shutdown();
+    gamepad.shutdown();
 
     // close the connection to the daemon
     pigpio_stop(gpio_handle);
