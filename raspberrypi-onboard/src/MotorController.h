@@ -1,10 +1,11 @@
 #pragma once
 
 // constants 
-#define PWM_FREQ_HZ             200
-#define GPIO_PWM_THROTTLE       18     // PWM0 channel with HW timer
-#define GPIO_IN1                23
-#define GPIO_IN2                24
+#define PWM_FREQ_HZ                 200
+#define CENTER_DEADZONE_THRESHOLD   60
+#define GPIO_PWM_THROTTLE           18  // PWM0 channel with HW timer
+#define GPIO_IN1                    23
+#define GPIO_IN2                    24
 
 class MotorController
 {

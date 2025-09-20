@@ -70,7 +70,7 @@ void MotorController::updateMotor_throttle(int throttle) const
     }
 
     // small throttle values below certain threshold shall not drive the motor (protect against noisy inputs)
-    if(abs(throttle) < 30) {
+    if(abs(throttle) < CENTER_DEADZONE_THRESHOLD) {
         this->stop_motor();
         return;
     }
@@ -88,14 +88,14 @@ void MotorController::updateMotor_throttle(int throttle) const
 
 void MotorController::set_drive_direction_forward() const
 {
-    gpio_write(this->gpio_handle, GPIO_IN1, 0);
-    gpio_write(this->gpio_handle, GPIO_IN2, 1);
+    gpio_write(this->gpio_handle, GPIO_IN1, 1);
+    gpio_write(this->gpio_handle, GPIO_IN2, 0);
 }
 
 void MotorController::set_drive_direction_backward() const 
 {
-    gpio_write(this->gpio_handle, GPIO_IN1, 1);
-    gpio_write(this->gpio_handle, GPIO_IN2, 0);
+    gpio_write(this->gpio_handle, GPIO_IN1, 0);
+    gpio_write(this->gpio_handle, GPIO_IN2, 1);
 }
 
 void MotorController::stop_motor() const 
