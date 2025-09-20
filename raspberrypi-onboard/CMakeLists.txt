@@ -29,10 +29,12 @@ pkg_check_modules(SDL2 REQUIRED sdl2)
 # Add all external libraries    
 find_library(PIGPIO_LIB pigpiod_if2 REQUIRED)          
 find_library(PTHREAD_LIB pthread REQUIRED)
-# find_library(SDL2_LIB sdl2 REQUIRED)
 
 # Create the executable
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+# Add additional include directories
+target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
 
 # Link the necessary libraries
 target_link_libraries(${PROJECT_NAME}
