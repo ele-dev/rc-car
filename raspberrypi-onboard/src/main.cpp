@@ -85,21 +85,29 @@ int main(int argc, char **argv)
                         }
 
                         // intentional joystick center deadzone (to protect against noise and stick drift)
-                        if(abs(input_value) < 5000) {
+                        if(abs(input_value) < 6000) {
                             input_value = 0;
                         }
                         
                         // calculate updated throttle value
-                        int throttle_cmd = (input_value * 255) / 32767;
+                        int throttle_cmd = (input_value * -255) / 32767;
 
                         motor.updateMotor_throttle(throttle_cmd);
                         std::cout << "--> Sent throttle command of " << throttle_cmd << std::endl;
                     }
                     break;
                 }
+                case SDL_CONTROLLERBUTTONDOWN:
+                {
+                    break;
+                }
+                case SDL_CONTROLLERBUTTONUP:
+                {
+                    break;
+                }
                 default:
                 {
-                    std::cerr << "Unknown SDL event (will be ignored)" << std::endl;
+                    // std::cerr << "Unknown SDL event (will be ignored)" << std::endl;
                     break;
                 }
             }
