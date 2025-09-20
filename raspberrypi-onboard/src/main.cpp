@@ -65,6 +65,7 @@ int main(int argc, char **argv)
     // main application loop
     std::cout << "\nBegin main processing loop ..." << std::endl;
     bool running = true;
+    static int last_throttle_cmd = 0;
     while(running)
     {
         SDL_Event e;
@@ -92,8 +93,11 @@ int main(int argc, char **argv)
                         // calculate updated throttle value
                         int throttle_cmd = (input_value * -255) / 32767;
 
-                        motor.updateMotor_throttle(throttle_cmd);
-                        std::cout << "--> Sent throttle command of " << throttle_cmd << std::endl;
+                        if(throttle_cmd != last_throttle_cmd) {
+                            motor.updateMotor_throttle(throttle_cmd);
+                            last_throttle_cmd = throttle_cmd;
+                            std::cout << "--> Sent throttle command of " << throttle_cmd << std::endl;
+                        }
                     }
                     break;
                 }
