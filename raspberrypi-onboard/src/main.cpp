@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
                         // clamp raw values to expected range
                         if(input_value > 32768) {
-                            input_value = 32768
+                            input_value = 32768;
                         } else if(input_value < -32768) {
                             input_value = -32768;
                         }
