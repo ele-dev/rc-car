@@ -28,5 +28,5 @@ private:
     void stop_motor() const;
 
 private:
-    int gpio_handle;
+    int m_gpio_handle;
 };

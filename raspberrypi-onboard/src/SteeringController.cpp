@@ -12,20 +12,20 @@
 
 SteeringController::SteeringController()
 {
-    this->gpio_handle = -1;
+    this->m_gpio_handle = -1;
 }
 
 SteeringController::~SteeringController()
 {
-    this->gpio_handle = -1;
+    this->m_gpio_handle = -1;
 }
 
 bool SteeringController::init(const int handle)
 {
     // store handle to interface with GPIO daemon
-    this->gpio_handle = handle;
+    this->m_gpio_handle = handle;
 
-    if(set_mode(this->gpio_handle, GPIO_SERVO, PI_OUTPUT) != 0) {
+    if(set_mode(this->m_gpio_handle, GPIO_SERVO, PI_OUTPUT) != 0) {
         std::cerr << "[SteeringController] " << "Failed to configure gpio pin for servo!" << std::endl;
         return false;
     }
@@ -60,10 +60,10 @@ void SteeringController::update_steering_angle(const int angle) const
         pulse_duration = MIN_PULSE_DURATION;
     }
 
-    set_servo_pulsewidth(this->gpio_handle, GPIO_SERVO, pulse_duration);
+    set_servo_pulsewidth(this->m_gpio_handle, GPIO_SERVO, pulse_duration);
 }
 
 void SteeringController::center_steering_servo() const
 {
-    set_servo_pulsewidth(this->gpio_handle, GPIO_SERVO, CENTER_PULSE_DURATION);
+    set_servo_pulsewidth(this->m_gpio_handle, GPIO_SERVO, CENTER_PULSE_DURATION);
 }

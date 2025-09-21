@@ -24,5 +24,5 @@ private:
     void center_steering_servo() const;
 
 private:
-    int gpio_handle;
+    int m_gpio_handle;
 };

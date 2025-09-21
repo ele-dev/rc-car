@@ -12,37 +12,37 @@
 
 MotorController::MotorController()
 {
-    this->gpio_handle = -1;
+    this->m_gpio_handle = -1;
 }
 
 MotorController::~MotorController()
 {
-    this->gpio_handle = -1;
+    this->m_gpio_handle = -1;
 }
 
 bool MotorController::init(const int handle) 
 {
     // store handle to interface with GPIO daemon inside class
-    this->gpio_handle = handle;
+    this->m_gpio_handle = handle;
 
     // configure IN1 & IN2 as digital output channels
-    if(set_mode(this->gpio_handle, GPIO_IN1, PI_OUTPUT) != 0) {
+    if(set_mode(this->m_gpio_handle, GPIO_IN1, PI_OUTPUT) != 0) {
         std::cerr << "[MotorController] " << "Failed to configure gpio pin IN1 as output!" << std::endl;
         return false;
     }
 
-    if(set_mode(this->gpio_handle, GPIO_IN2, PI_OUTPUT) != 0) {
+    if(set_mode(this->m_gpio_handle, GPIO_IN2, PI_OUTPUT) != 0) {
         std::cerr << "[MotorController] " << "Failed to configure gpio pin IN2 as output!" << std::endl;
         return false;
     }
 
     // setup fixed frequency PWM signal channel for throttle control
-    if(set_mode(this->gpio_handle, GPIO_PWM_THROTTLE, PI_OUTPUT) != 0) {
+    if(set_mode(this->m_gpio_handle, GPIO_PWM_THROTTLE, PI_OUTPUT) != 0) {
         std::cerr << "[MotorController] " << "Failed tp configure EN pin as output!" << std::endl;
         return false;
     }
 
-    int frequency = set_PWM_frequency(this->gpio_handle, GPIO_PWM_THROTTLE, PWM_FREQ_HZ);
+    int frequency = set_PWM_frequency(this->m_gpio_handle, GPIO_PWM_THROTTLE, PWM_FREQ_HZ);
     if(frequency == PI_BAD_USER_GPIO || frequency == PI_NOT_PERMITTED) {
         std::cerr << "[MotorController] " << "Failed to configure PWM for gpio pin EN!" << std::endl;
         return false;
@@ -87,24 +87,24 @@ void MotorController::updateMotor_throttle(int throttle) const
     }
 
     // output new duty cycle to ajdust motor throttle
-    set_PWM_dutycycle(this->gpio_handle, GPIO_PWM_THROTTLE, abs(throttle));
+    set_PWM_dutycycle(this->m_gpio_handle, GPIO_PWM_THROTTLE, abs(throttle));
 }
 
 void MotorController::set_drive_direction_forward() const
 {
-    gpio_write(this->gpio_handle, GPIO_IN1, 1);
-    gpio_write(this->gpio_handle, GPIO_IN2, 0);
+    gpio_write(this->m_gpio_handle, GPIO_IN1, 1);
+    gpio_write(this->m_gpio_handle, GPIO_IN2, 0);
 }
 
 void MotorController::set_drive_direction_backward() const 
 {
-    gpio_write(this->gpio_handle, GPIO_IN1, 0);
-    gpio_write(this->gpio_handle, GPIO_IN2, 1);
+    gpio_write(this->m_gpio_handle, GPIO_IN1, 0);
+    gpio_write(this->m_gpio_handle, GPIO_IN2, 1);
 }
 
 void MotorController::stop_motor() const 
 {
-    gpio_write(this->gpio_handle, GPIO_IN1, 0);
-    gpio_write(this->gpio_handle, GPIO_IN2, 0);
-    set_PWM_dutycycle(this->gpio_handle, GPIO_PWM_THROTTLE, 0);
+    gpio_write(this->m_gpio_handle, GPIO_IN1, 0);
+    gpio_write(this->m_gpio_handle, GPIO_IN2, 0);
+    set_PWM_dutycycle(this->m_gpio_handle, GPIO_PWM_THROTTLE, 0);
 }
