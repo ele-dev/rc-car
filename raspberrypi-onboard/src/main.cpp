@@ -102,12 +102,11 @@ int main(int argc, char **argv)
                             last_throttle_cmd = throttle_cmd;
                             std::cout << "--> Sent throttle command of " << throttle_cmd << std::endl;
                         }
-                    } else {
-                        std::cout << "Movement event on axis " << SDL_GameControllerGetStringForAxis(e.caxis.axis) << std::endl;
+                        break;
                     }
-                    /* 
+
                     // steering wheel (servo) 
-                    else if(e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
+                    if(e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
                         // calculate updated steering command
                         int steering_cmd = (input_value * 255) / 32767;
 
@@ -117,8 +116,11 @@ int main(int argc, char **argv)
                             last_steering_cmd = steering_cmd;
                             std::cout << "--> Sent steering command of " << steering_cmd << std::endl;
                         }
+                        break;
                     }
-                    */
+
+                    // debug for movements on any other axis
+                    std::cout << "Movement event on axis " << SDL_GameControllerGetStringForAxis(static_cast<SDL_GameControllerAxis>(e.caxis.axis)) << std::endl;
 
                     break;
                 }
