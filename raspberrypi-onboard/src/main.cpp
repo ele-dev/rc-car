@@ -120,7 +120,7 @@ int main(int argc, char **argv)
                     }
 
                     // debug for movements on any other axis
-                    std::cout << "Movement event on axis " << SDL_GameControllerGetStringForAxis(static_cast<SDL_GameControllerAxis>(e.caxis.axis)) << std::endl;
+                    // std::cout << "Movement event on axis " << SDL_GameControllerGetStringForAxis(static_cast<SDL_GameControllerAxis>(e.caxis.axis)) << std::endl;
 
                     break;
                 }
