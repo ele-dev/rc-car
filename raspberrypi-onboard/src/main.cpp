@@ -102,7 +102,10 @@ int main(int argc, char **argv)
                             last_throttle_cmd = throttle_cmd;
                             std::cout << "--> Sent throttle command of " << throttle_cmd << std::endl;
                         }
-                    } 
+                    } else {
+                        std::cout << "Movement event on axis " << SDL_GameControllerGetStringForAxis(e.caxis.axis) << std::endl;
+                    }
+                    /* 
                     // steering wheel (servo) 
                     else if(e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
                         // calculate updated steering command
@@ -115,6 +118,8 @@ int main(int argc, char **argv)
                             std::cout << "--> Sent steering command of " << steering_cmd << std::endl;
                         }
                     }
+                    */
+
                     break;
                 }
                 case SDL_CONTROLLERBUTTONDOWN:
