@@ -66,6 +66,7 @@ int main(int argc, char **argv)
     std::cout << "\nBegin main processing loop ..." << std::endl;
     bool running = true;
     static int last_throttle_cmd = 0;
+    static int last_steering_cmd = 0;
     while(running)
     {
         SDL_Event e;
@@ -75,28 +76,43 @@ int main(int argc, char **argv)
             {
                 case SDL_CONTROLLERAXISMOTION:
                 {
+                    // general joystick input preprocessing 
+                    int input_value = e.caxis.value;
+
+                    // clamp raw values to expected range
+                    if(input_value > 32768) {
+                        input_value = 32768;
+                    } else if(input_value < -32768) {
+                        input_value = -32768;
+                    }
+
+                    // intentional joystick center deadzone (to protect against noise and stick drift)
+                    if(abs(input_value) < 6000) {
+                        input_value = 0;
+                    }
+
+                    // motor drive
                     if(e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY) {
-                        int input_value = e.caxis.value;
-
-                        // clamp raw values to expected range
-                        if(input_value > 32768) {
-                            input_value = 32768;
-                        } else if(input_value < -32768) {
-                            input_value = -32768;
-                        }
-
-                        // intentional joystick center deadzone (to protect against noise and stick drift)
-                        if(abs(input_value) < 6000) {
-                            input_value = 0;
-                        }
-                        
                         // calculate updated throttle value
                         int throttle_cmd = (input_value * -255) / 32767;
 
+                        // only send if throttle_cmd has changed
                         if(throttle_cmd != last_throttle_cmd) {
                             motor.updateMotor_throttle(throttle_cmd);
                             last_throttle_cmd = throttle_cmd;
                             std::cout << "--> Sent throttle command of " << throttle_cmd << std::endl;
+                        }
+                    } 
+                    // steering wheel (servo) 
+                    else if(e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
+                        // calculate updated steering command
+                        int steering_cmd = (input_value * 255) / 32767;
+
+                        // only send if steering command has changed
+                        if(steering_cmd != last_steering_cmd) {
+                            steeringwheel.update_steering_angle(steering_cmd);
+                            last_steering_cmd = steering_cmd;
+                            std::cout << "--> Sent steering command of " << steering_cmd << std::endl;
                         }
                     }
                     break;
