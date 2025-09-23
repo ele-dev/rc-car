@@ -11,7 +11,7 @@ Application::Application()
 {
 }
 
-virtual Application::~Application()
+Application::~Application()
 {
 }
 
@@ -95,7 +95,7 @@ void Application::run_app(bool& running_flag)
                 }
                 case SDL_CONTROLLERDEVICEREMOVED:
                 {
-                    if(e.cdevice.which == gamepad.get_instance_id()) {
+                    if(e.cdevice.which == this->m_gamepad.get_instance_id()) {
                         std::cout << "[Warning] Gamepad connection lost! --> Emergency stop" << std::endl;
                         this->m_motor.updateMotor_throttle(0);
                     }

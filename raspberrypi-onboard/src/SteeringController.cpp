@@ -12,7 +12,7 @@ SteeringController::SteeringController(GPIO& gpio_ptr) : m_gpio(gpio_ptr)
     // this->m_gpio_handle = -1;
 }
 
-virtual SteeringController::~SteeringController()
+SteeringController::~SteeringController()
 {
     // this->m_gpio_handle = -1;
 }

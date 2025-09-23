@@ -17,7 +17,7 @@ GPIO::GPIO()
     }
 }
 
-virtual GPIO::~GPIO() 
+GPIO::~GPIO() 
 {
     // close the connection to the daemon
     pigpio_stop(this->m_gpio_handle);

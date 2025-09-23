@@ -12,7 +12,7 @@ MotorController::MotorController(GPIO& gpio_ptr) : m_gpio(gpio_ptr)
     // this->m_gpio_handle = -1;
 }
 
-virtual MotorController::~MotorController()
+MotorController::~MotorController()
 {
     // this->m_gpio_handle = -1;
 }
