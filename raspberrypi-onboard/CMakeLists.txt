@@ -11,7 +11,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Add your source files here
 set(SOURCES
-    src/main.cpp 
+    src/main.cpp
+    src/Application.cpp
+    src/GPIO.cpp
     src/MotorController.cpp
     src/SteeringController.cpp
     src/Gamepad.cpp

@@ -5,6 +5,11 @@
 
 #pragma once
 
+// includes 
+#include "GPIO.h"
+
+#include <iostream>
+
 // constants 
 #define PWM_FREQ_HZ                 200
 #define CENTER_DEADZONE_THRESHOLD   70
@@ -15,10 +20,10 @@
 class MotorController
 {
 public:
-    MotorController();
-    ~MotorController();
+    MotorController(GPIO& gpio_ptr);
+    virtual ~MotorController();
 
-    bool init(const int handle);
+    bool init();
     void shutdown() const;
     void updateMotor_throttle(int throttle) const;
 
@@ -28,5 +33,6 @@ private:
     void stop_motor() const;
 
 private:
-    int m_gpio_handle;
+    // int m_gpio_handle;
+    GPIO& m_gpio;
 };

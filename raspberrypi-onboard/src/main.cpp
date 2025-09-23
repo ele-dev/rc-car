@@ -3,11 +3,8 @@
     written by Elias Geiger
 */
 
-#include "MotorController.h"
-#include "SteeringController.h"
-#include "Gamepad.h"
+#include "Application.h"
 
-#include <pigpiod_if2.h>
 #include <iostream>
 #include <signal.h>
 #include <chrono>
@@ -15,13 +12,11 @@
 
 // function prototypes
 void terminate_signal_handler(int);
-void test_motor_control();
+// void test_motor_control();
 
-// submodule instances
-MotorController motor;
-SteeringController steeringwheel;
-Gamepad gamepad;
-int gpio_handle = -1;
+// application handle
+static bool running = true;
+Application app_handle;
 
 // ------------ application main section ------------------- //
 
@@ -34,142 +29,23 @@ int main(int argc, char **argv)
     sigIntHandler.sa_handler = terminate_signal_handler;
     sigemptyset(&sigIntHandler.sa_mask);
     sigIntHandler.sa_flags = 0;
-    sigaction(SIGINT, &sigIntHandler, NULL);
+    sigaction(SIGINT, &sigIntHandler, nullptr);
 
-    // connect to pigpio systemd daemon and retrieve handle
-    gpio_handle = pigpio_start(NULL, NULL);
-    if(gpio_handle < 0) {
-        std::cerr << "Failed to connect to PiGPIO systemd daemon!" << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    // execute the actual application logic
+    app_handle.run_app(running);
 
-    // init submodules
-    bool result = steeringwheel.init(gpio_handle);
-    if(!result) {
-        exit(EXIT_FAILURE);
-    }
-
-    result = motor.init(gpio_handle);
-    if(!result) {
-        exit(EXIT_FAILURE);
-    }
-
-    result = gamepad.init();
-    if(!result) {
-        exit(EXIT_FAILURE);
-    }
-
-    // just for testing
-    // test_motor_control();
-
-    // main application loop
-    std::cout << "\nBegin main processing loop ..." << std::endl;
-    bool running = true;
-    static int last_throttle_cmd = 0;
-    static int last_steering_cmd = 0;
-    while(running)
-    {
-        SDL_Event e;
-        while(SDL_PollEvent(&e)) 
-        {
-            switch(e.type)
-            {
-                case SDL_CONTROLLERAXISMOTION:
-                {
-                    // general joystick input preprocessing 
-                    int input_value = e.caxis.value;
-
-                    // clamp raw values to expected range
-                    if(input_value > 32768) {
-                        input_value = 32768;
-                    } else if(input_value < -32768) {
-                        input_value = -32768;
-                    }
-
-                    // intentional joystick center deadzone (to protect against noise and stick drift)
-                    if(abs(input_value) < 6000) {
-                        input_value = 0;
-                    }
-
-                    // motor drive
-                    if(e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY) {
-                        // calculate updated throttle value
-                        int throttle_cmd = (input_value * -255) / 32767;
-
-                        // only send if throttle_cmd has changed
-                        if(throttle_cmd != last_throttle_cmd) {
-                            motor.updateMotor_throttle(throttle_cmd);
-                            last_throttle_cmd = throttle_cmd;
-                            std::cout << "--> Sent throttle command of " << throttle_cmd << std::endl;
-                        }
-                        break;
-                    }
-
-                    // steering wheel (servo) 
-                    if(e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
-                        // calculate updated steering command
-                        int steering_cmd = (input_value * 255) / 32767;
-
-                        // only send if steering command has changed
-                        if(steering_cmd != last_steering_cmd) {
-                            steeringwheel.update_steering_angle(steering_cmd);
-                            last_steering_cmd = steering_cmd;
-                            std::cout << "--> Sent steering command of " << steering_cmd << std::endl;
-                        }
-                        break;
-                    }
-
-                    // debug for movements on any other axis
-                    // std::cout << "Movement event on axis " << SDL_GameControllerGetStringForAxis(static_cast<SDL_GameControllerAxis>(e.caxis.axis)) << std::endl;
-
-                    break;
-                }
-                case SDL_CONTROLLERBUTTONDOWN:
-                {
-                    break;
-                }
-                case SDL_CONTROLLERBUTTONUP:
-                {
-                    break;
-                }
-                case SDL_CONTROLLERDEVICEREMOVED:
-                {
-                    if(e.cdevice.which == gamepad.get_instance_id()) {
-                        std::cout << "[Warning] Gamepad connection lost! --> Emergency stop" << std::endl;
-                        motor.updateMotor_throttle(0);
-                    }
-                    break;
-                }
-                default:
-                {
-                    // std::cerr << "Unknown SDL event (will be ignored)" << std::endl;
-                    break;
-                }
-            }
-        }
-
-        // short blocking idle time to reduce cpu load
-        SDL_Delay(5);
-    }
-
-    terminate_signal_handler(EXIT_SUCCESS);
     return EXIT_SUCCESS;
 }
 
 void terminate_signal_handler(int code) {
-    // do manual cleanup tasks
-    motor.shutdown();
-    steeringwheel.shutdown();
-    gamepad.shutdown();
+    std::cout << "\nQuit application via Ctrl+C ...\n";
+    // exit(code);
 
-    // close the connection to the daemon
-    pigpio_stop(gpio_handle);
-
-    std::cout << "\nExit now." << std::endl;
-
-    exit(code);
+    // unset running flag to leave application loop in main context
+    running = false;
 }
 
+/*
 void test_motor_control()
 {
     // main application loop
@@ -193,3 +69,4 @@ void test_motor_control()
         }
     }
 }
+*/

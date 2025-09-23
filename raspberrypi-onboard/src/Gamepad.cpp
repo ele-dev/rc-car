@@ -13,10 +13,11 @@ Gamepad::Gamepad()
     this->m_jid = -1;
 }
 
-Gamepad::~Gamepad()
+virtual Gamepad::~Gamepad()
 {
-    this->m_gc = nullptr;
-    this->m_jid = -1;
+    try {
+        this->shutdown();
+    } catch(...) {}
 }
 
 bool Gamepad::init()
@@ -56,6 +57,7 @@ void Gamepad::shutdown()
     if(this->m_gc) {
         SDL_GameControllerClose(this->m_gc);
         this->m_gc = nullptr;
+        this->m_jid = -1;
     }
     SDL_Quit();
 }

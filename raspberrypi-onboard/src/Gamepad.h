@@ -13,7 +13,7 @@ class Gamepad
 {
 public:
     Gamepad();
-    ~Gamepad();
+    virtual ~Gamepad();
 
     bool init();
     void shutdown();
