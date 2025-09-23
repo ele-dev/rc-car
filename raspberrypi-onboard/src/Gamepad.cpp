@@ -58,8 +58,10 @@ void Gamepad::shutdown()
         SDL_GameControllerClose(this->m_gc);
         this->m_gc = nullptr;
         this->m_jid = -1;
+        std::cout << "[Gamepad] Controller closed\n";
     }
     SDL_Quit();
+    std::cout << "[Gamepad] SDL2 API closed. memory released \n";
 }
 
 SDL_JoystickID Gamepad::get_instance_id() const

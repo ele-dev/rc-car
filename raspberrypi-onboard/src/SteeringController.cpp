@@ -15,6 +15,7 @@ SteeringController::SteeringController(GPIO& gpio_ptr) : m_gpio(gpio_ptr)
 SteeringController::~SteeringController()
 {
     // this->m_gpio_handle = -1;
+    std::cout << "[MotorController] memory released\n";
 }
 
 bool SteeringController::init()

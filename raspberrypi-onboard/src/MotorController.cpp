@@ -15,6 +15,7 @@ MotorController::MotorController(GPIO& gpio_ptr) : m_gpio(gpio_ptr)
 MotorController::~MotorController()
 {
     // this->m_gpio_handle = -1;
+    std::cout << "[MotorController] memory released\n";
 }
 
 bool MotorController::init() 

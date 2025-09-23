@@ -22,6 +22,7 @@ GPIO::~GPIO()
     // close the connection to the daemon
     pigpio_stop(this->m_gpio_handle);
     this->m_gpio_handle = -1;
+    std::cout << "[GPIO] handle closed. memory released\n";
 }
 
 int GPIO::get_handle() const {
