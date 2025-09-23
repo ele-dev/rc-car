@@ -8,6 +8,7 @@
 // includes
 #include <pigpiod_if2.h>
 #include <stdexcept>
+#include <iostream>
 
 class GPIO
 {
