@@ -13,7 +13,7 @@ Gamepad::Gamepad()
     this->m_jid = -1;
 }
 
-virtual Gamepad::~Gamepad()
+Gamepad::~Gamepad()
 {
     try {
         this->shutdown();
